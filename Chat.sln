@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "domain", "domain", "{F6DDFE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{6BAD526E-46AE-45F2-8959-779F555D627A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "chat.infra", "src\chat.infra\chat.infra.csproj", "{85F0A28A-AFAF-4924-A8F7-E6846E645E4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Infra.Data", "src\chat.infra\Chat.Infra.Data.csproj", "{85F0A28A-AFAF-4924-A8F7-E6846E645E4E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra.external", "infra.external", "{C930F770-3400-444F-A183-D8B90D907C31}"
 EndProject

@@ -1,13 +1,13 @@
-﻿using Chat.domain.Interfaces.Services;
+﻿using Chat.Domain.Interfaces.Services;
 using Chat.Domain.Interfaces;
-using Chat.Domain.Interfaces.Services;
 using Chat.Domain.Models.Inputs;
 using Microsoft.AspNetCore.Http;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Chat.Domain.Hubs
 {
-    public class ChatHub : Hub, IChatHub
+    public class ChatHub : Hub
     {
         const string stockMessage = "/stock=";
         private readonly IChatService _chatService;
@@ -17,25 +17,24 @@ namespace Chat.Domain.Hubs
 
         public ChatHub(IChatService chatService, IUserService userService, IHttpContextAccessor httpContextAccessor, IStockApiService stockApiExternalService)
         {
-            _chatService = chatService ?? chatService;
-            _userService = userService ?? userService;
+            _chatService = chatService;
+            _userService = userService;
             _httpContextAccessor = httpContextAccessor;
             _stockApiExternalService = stockApiExternalService;
         }
 
         public override async Task OnConnectedAsync()
         {
-            var httpContext = Context.GetHttpContext();
-            await httpContext.Session.LoadAsync();
 
-            var roomId = httpContext.Request.Query["chatroomId"];
+
+            var roomId = _httpContextAccessor.HttpContext.Request.Query["chatroomId"];
             var userName = _httpContextAccessor.HttpContext?.User.Identity.Name;
 
             if (userName == null)
                 await OnDisconnectedAsync(new Exception("Not Authorized"));
             else
             {
-                if (!await VerifyUserAlreadyInRoomAsync(roomId,userName))
+                if (!await VerifyUserAlreadyInRoomAsync(roomId, userName))
                 {
                     var user = new UserInput { Username = userName };
                     await _userService.OnStartSession(user, roomId);
@@ -49,10 +48,7 @@ namespace Chat.Domain.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var httpContext = Context.GetHttpContext();
-            await httpContext.Session.LoadAsync();
-
-            var roomId = httpContext.Request.Query["chatroomId"];
+            var roomId = _httpContextAccessor.HttpContext.Request.Query["chatroomId"];
             var userName = _httpContextAccessor.HttpContext?.User.Identity.Name;
 
             if (userName == null)
@@ -65,25 +61,37 @@ namespace Chat.Domain.Hubs
             }
         }
 
-        public async Task SendMessage(string message, string roomId, string userTo, string user = null)
+
+        public async Task SendMessage(string message, string roomId, string userTo, bool join, string user = null)
         {
             if (string.IsNullOrEmpty(user))
                 user = _httpContextAccessor.HttpContext?.User.Identity.Name;
 
+
             if (!string.IsNullOrEmpty(user))
             {
-                if (!await ProcessStockCodeAsync(message, roomId, user))
+                var date = (int)DateTimeOffset.Now.ToUnixTimeSeconds();
+                if (join)
                 {
-                    var msg = new MessageInput
+                    await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
+                    await Clients.Group(roomId).SendAsync("ReceiveMessage", user, "joined the toom", date, "all").ConfigureAwait(false);
+                }
+                else
+                {
+                    if (!await ProcessStockCodeAsync(message, roomId, user))
                     {
-                        Date = (int)DateTimeOffset.Now.ToUnixTimeSeconds(),
-                        From = user,
-                        To = userTo,
-                        Message = message,
-                        RoomId = roomId
-                    };
+                        var msg = new MessageInput
+                        {
+                            Date = date,
+                            From = user,
+                            To = userTo,
+                            Message = message,
+                            RoomId = roomId
+                        };
 
-                    await _chatService.SendMessage(msg);
+                        await _chatService.SendMessage(msg);
+                        await Clients.Group(roomId).SendAsync("ReceiveMessage", user, message, msg.Date, msg.To).ConfigureAwait(true);
+                    }
                 }
             }
             else

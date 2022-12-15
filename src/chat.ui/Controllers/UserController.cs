@@ -2,6 +2,7 @@
 using Chat.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Chat.Domain.Models;
 
 namespace Chat.UI.Controllers
 {
@@ -49,14 +50,14 @@ namespace Chat.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new UserModel()
                 {
                     Username = model.UserName,
                     Email = model.Email,
                     Password = model.Password
                 };
 
-                var result = await _accountService.RegisterAsync(user);
+                var result = await _userService.RegisterAsync(user);
 
                 if (result.Succeeded)
                     return RedirectToAction("index", "home");

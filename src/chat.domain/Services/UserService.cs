@@ -11,17 +11,15 @@ namespace Chat.Domain.Services
     public class UserService : IUserService
     {
         private readonly IDatabase _database;
-        private readonly IConnectionMultiplexer _redis;
         private readonly IMessageService _messageService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public UserService(IDatabase database, IConnectionMultiplexer redis, IMessageService messageService, IHttpContextAccessor httpContextAccessor, IMapper mapper, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public UserService(IConnectionMultiplexer redis, IMessageService messageService, IHttpContextAccessor httpContextAccessor, IMapper mapper, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
-            _database = database;
-            _redis = redis;
+            _database = redis.GetDatabase();
             _messageService = messageService;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;

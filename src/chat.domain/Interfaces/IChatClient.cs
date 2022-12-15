@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Chat.Domain.Interfaces
 {
-    public interface IChatHub
+    public interface IChatClient
     {
-        Task SendMessage(string message, string roomId, string userTo, string? user = null);
+        Task ReceiveMessage(string user, string message, int date, string to);
     }
 }

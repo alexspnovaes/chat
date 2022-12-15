@@ -2,11 +2,10 @@
 using Chat.Domain.Interfaces.Services;
 using Chat.Domain.Services;
 using Chat.Domain.Interfaces;
-using Chat.domain.Interfaces.Services;
-using Chat.domain.Services;
-using Infra.External.ExternalServices;
-using Infra.External.Interfaces;
 using Chat.Domain.Interfaces.Repositories;
+using Domain.Interfaces.ExternalServices;
+using Infra.External.ExternalServices;
+using FinancialChat.Infra.Data.Repositories;
 
 namespace Chat.UI.Configuration
 {
@@ -22,11 +21,11 @@ namespace Chat.UI.Configuration
             services.AddScoped<INotifyStockService, NotifyStockService>();
             services.AddScoped<IStockApiService, StockApiService>();
             services.AddScoped<IStockApiExternalService, StockApiExternalService>();
-            services.AddScoped<IChatHub, ChatHub>();
+            
             #endregion
 
             #region repositories
-            services.AddScoped<IChatRepository, RoomRepository>();
+            services.AddScoped<IChatRepository, ChatRepository>();
             #endregion
         }
     }

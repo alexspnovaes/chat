@@ -2,7 +2,7 @@
 using Chat.Domain.Models.Inputs;
 using Domain.Interfaces.ExternalServices;
 
-namespace Chat.domain.Services
+namespace Chat.Domain.Services
 {
     public class StockApiService : IStockApiService
     {
