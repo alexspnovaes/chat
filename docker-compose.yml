@@ -1,0 +1,41 @@
+version: '3.4'
+
+services: 
+  mssqldata:
+    image: "mcr.microsoft.com/mssql/server"
+    entrypoint: /bin/bash
+  mssql:
+    image: "mcr.microsoft.com/mssql/server"
+    ports:
+      - 1433:1433
+    volumes:
+      - /var/opt/mssql      
+      - ./:/usr/src/app     
+    working_dir: /usr/src/app         
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: 2789@Hl123456
+    volumes_from:
+      - mssqldata      
+  redis:
+    image: "redis"    
+    command: ["redis-server", "--bind", "redis", "--port", "6379"]
+    ports:
+     - "6379:6379"
+    volumes:
+      - $PWD/redis-data:/var/lib/redis
+      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf    
+  rabbit:
+    image: rabbitmq:3.6.7-management
+    hostname: rabbit
+    ports:
+      - 15672:15672
+      - 5672:5672
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+networks: 
+    financialchat-network:
+        driver: bridge
