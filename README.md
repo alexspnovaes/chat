@@ -7,24 +7,17 @@ Financial was created to organize some chats about financial. The main differenc
 There is a docker-compose file to help to up the containers of the redis, sql server and rabbit mq, is not mandatory, but it´s helps.
 This app is using 
 .NET 7: https://dotnet.microsoft.com/en-us/download/dotnet/7.0
+
 RabbitMQ: https://www.rabbitmq.com/
+
 Redis cache manager: https://redis.io/
+
 MS SQL Server: https://www.microsoft.com/sql-server/sql-server-2019
+
 
 ## Usage
 
-```python
-import foobar
-
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
-```
+First of all, you need to create an user in the menu "Register". After, you can login and start a new chat, choose the chat room on the menu Chat on the top right menu
 
 ## Contributing
 
@@ -35,4 +28,4 @@ Please make sure to update tests as appropriate.
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[CopyRight 2022]
