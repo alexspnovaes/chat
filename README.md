@@ -14,6 +14,7 @@ Redis cache manager: https://redis.io/
 
 MS SQL Server: https://www.microsoft.com/sql-server/sql-server-2019
 
+There is a setup file to help to create the database, it´s possible to use the migrations, but I think it´s easier only running this sql file
 
 ## Usage
 
