@@ -40,16 +40,9 @@ namespace Chat.Domain.Services
 
             foreach (var valueRedisVal in values)
             {
-                try
-                {
-                    var item = valueRedisVal.ToString();
-                    if (item is not null)
-                        messages.Add(JsonConvert.DeserializeObject<MessageModel>(item));
-                }
-                catch (System.Text.Json.JsonException)
-                {
-                    //TODO: tratamento de erro
-                }
+                var item = valueRedisVal.ToString();
+                if (item is not null)
+                    messages.Add(JsonConvert.DeserializeObject<MessageModel>(item));
             }
 
             return messages.OrderBy(w => w.Date).ToList();
