@@ -104,7 +104,7 @@ namespace Chat.Domain.Hubs
         {
             if (message.Contains(stockMessage))
             {
-                var stockCode = message.Substring(message.LastIndexOf(stockMessage) + 7, 7);
+                var stockCode = message.Substring(message.LastIndexOf("=") + 1, message.Length - message.LastIndexOf("=") - 1);
                 var stock = new StockInput { RoomId = roomId, StockCode = stockCode, User = user };
                 await _stockApiExternalService.PostAsync(stock);
                 return true;

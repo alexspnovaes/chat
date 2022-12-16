@@ -3,7 +3,7 @@ using Chat.Domain.Interfaces.Repositories;
 using Chat.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinancialChat.Infra.Data.Repositories
+namespace Chat.Infra.Data.Repositories
 {
     public class ChatRepository : IChatRepository
     {

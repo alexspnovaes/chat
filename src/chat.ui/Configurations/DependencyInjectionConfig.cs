@@ -5,7 +5,7 @@ using Chat.Domain.Interfaces;
 using Chat.Domain.Interfaces.Repositories;
 using Domain.Interfaces.ExternalServices;
 using Infra.External.ExternalServices;
-using FinancialChat.Infra.Data.Repositories;
+using Chat.Infra.Data.Repositories;
 
 namespace Chat.UI.Configuration
 {

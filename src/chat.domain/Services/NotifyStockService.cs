@@ -19,7 +19,16 @@ namespace Chat.Domain.Services
         public async Task NotifyRoomUserAsync(string code, string userId, string roomId, string value)
         {
             var date = (int)DateTimeOffset.Now.ToUnixTimeSeconds();
-            var message = string.Concat(code, " quote is ", value, " per shre");
+            string message;
+            if (code.Contains("Error"))
+            {
+                message = code;
+            }
+            else
+            {
+                message = string.Concat(code, " quote is ", value, " per shre");
+            }
+
             await _hubContext.Clients.Group(roomId).SendAsync("ReceiveMessage", userId, message, date, "all");
         }
     }
